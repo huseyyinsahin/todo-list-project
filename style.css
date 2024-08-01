@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("img/backg.jpg");
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  color: #18379e;
+  font-family: "Dancing Script", cursive;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.028);
+  height: 80vh;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.task {
+  height: 30vh;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input,
+.select,
+.add {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.add {
+  background-color: #2b56e246;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+.add:hover {
+  background-color: #18379e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+
+.list {
+  width: 90%;
+  height: 40vh;
+  border-top: 2px solid #979696;
+  overflow: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list::-webkit-scrollbar {
+  width: 10px;
+  background-color: white;
+}
+.list::-webkit-scrollbar-thumb {
+  background-color: #003cffa3;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+.list::-webkit-scrollbar-thumb:hover {
+  background-color: #18379e;
+}
+
+.list li {
+  width: 99%;
+  background-color: #2b56e246;
+  color: white;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  word-break: break-word;
+}
+.list li:hover {
+  background-color: #18379e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+
+@media screen and (max-width: 1000px) {
+  body {
+    background-position: top;
+  }
+  .container {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: none;
+  }
+  .task {
+    width: 70%;
+  }
+}
+
+.line-through {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
