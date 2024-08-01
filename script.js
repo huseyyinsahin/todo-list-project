@@ -31,15 +31,21 @@ function newTask() {
     const importance = document.createElement("span");
     importance.textContent = select.value;
     importance.style.whiteSpace = "nowrap";
-    importance.style.margin = "0px 30px";
+    importance.style.margin = "0px 10px";
+
+    const edit = document.createElement("a");
+    edit.classList.add("fa-solid", "fa-pen-to-square");
+    edit.style.cursor = "pointer";
+    edit.style.marginRight = "10px";
 
     const del = document.createElement("i");
     del.classList.add("fa-solid", "fa-trash");
     del.style.cursor = "pointer";
-    del.style.marginRight = "20px";
+    del.style.marginRight = "10px";
 
     newLi.appendChild(newP);
     newLi.appendChild(importance);
+    newLi.appendChild(edit);
     newLi.appendChild(del);
     list.appendChild(newLi);
     input.value = "";
@@ -88,5 +94,21 @@ document.body.addEventListener("keydown", (e) => {
 list.addEventListener("click", (e) => {
   if (e.target.tagName === "P") {
     e.target.classList.toggle("line-through");
+  }
+});
+
+list.addEventListener("click", (e) => {
+  if (e.target.tagName === "A") {
+    const selectedP = e.target.previousElementSibling.previousElementSibling;
+    const editInput = document.createElement("input");
+    editInput.value = selectedP.textContent;
+    selectedP.parentElement.replaceChild(editInput, selectedP);
+
+    editInput.addEventListener("blur", () => {
+      selectedP.textContent = editInput.value;
+      editInput.parentElement.replaceChild(selectedP, editInput);
+    });
+
+    editInput.focus();
   }
 });
