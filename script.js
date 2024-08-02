@@ -107,6 +107,7 @@ list.addEventListener("click", (e) => {
     editInput.style.borderRadius = "0.5rem";
     editInput.style.border = "none";
     editInput.value = selectedP.textContent;
+    
     selectedP.parentElement.replaceChild(editInput, selectedP);
 
     editInput.addEventListener("blur", () => {
