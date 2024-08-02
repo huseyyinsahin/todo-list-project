@@ -101,12 +101,24 @@ list.addEventListener("click", (e) => {
   if (e.target.tagName === "A") {
     const selectedP = e.target.previousElementSibling.previousElementSibling;
     const editInput = document.createElement("input");
+    editInput.style.padding = "5px 10px";
+    editInput.style.fontSize = "1rem";
+    editInput.style.outline = "none";
+    editInput.style.borderRadius = "0.5rem";
+    editInput.style.border = "none";
     editInput.value = selectedP.textContent;
     selectedP.parentElement.replaceChild(editInput, selectedP);
 
     editInput.addEventListener("blur", () => {
-      selectedP.textContent = editInput.value;
-      editInput.parentElement.replaceChild(selectedP, editInput);
+      if (editInput.value == "") {
+        Toast.fire({
+          icon: "error",
+          title: "Task edit failed",
+        });
+      } else {
+        selectedP.textContent = editInput.value;
+        editInput.parentElement.replaceChild(selectedP, editInput);
+      }
     });
 
     editInput.focus();
