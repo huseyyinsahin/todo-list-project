@@ -17,6 +17,23 @@ const Toast = Swal.mixin({
 
 input.focus();
 
+function saveLocalStorage() {
+  const data = {
+    list: list.innerHTML,
+  };
+  localStorage.setItem("listData", JSON.stringify(data));
+}
+
+function loadLocalStorage() {
+  const listD = localStorage.getItem("listData");
+  if (listD) {
+    const data = JSON.parse(listD);
+    list.innerHTML = data.list;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadLocalStorage);
+
 function newTask() {
   if (input.value == "") {
     Toast.fire({
@@ -50,6 +67,7 @@ function newTask() {
     list.appendChild(newLi);
     input.value = "";
     input.focus();
+    saveLocalStorage();
 
     Toast.fire({
       icon: "success",
@@ -72,6 +90,7 @@ list.addEventListener("click", (e) => {
   if (e.target.tagName === "I") {
     const selectedLi = e.target.parentElement;
     selectedLi.remove();
+    saveLocalStorage();
 
     Toast.fire({
       icon: "warning",
@@ -83,6 +102,7 @@ list.addEventListener("click", (e) => {
 document.body.addEventListener("keydown", (e) => {
   if (e.key == "Delete") {
     list.firstElementChild.remove();
+    saveLocalStorage();
 
     Toast.fire({
       icon: "warning",
@@ -94,6 +114,7 @@ document.body.addEventListener("keydown", (e) => {
 list.addEventListener("click", (e) => {
   if (e.target.tagName === "P") {
     e.target.classList.toggle("line-through");
+    saveLocalStorage();
   }
 });
 
@@ -107,7 +128,7 @@ list.addEventListener("click", (e) => {
     editInput.style.borderRadius = "0.5rem";
     editInput.style.border = "none";
     editInput.value = selectedP.textContent;
-    
+
     selectedP.parentElement.replaceChild(editInput, selectedP);
 
     editInput.addEventListener("blur", () => {
@@ -119,9 +140,9 @@ list.addEventListener("click", (e) => {
       } else {
         selectedP.textContent = editInput.value;
         editInput.parentElement.replaceChild(selectedP, editInput);
+        saveLocalStorage();
       }
     });
-
     editInput.focus();
   }
 });
