@@ -15,6 +15,21 @@ const Toast = Swal.mixin({
   },
 });
 
+const setLocalStorage = (data) => {
+  const storageTasks = JSON.parse(localStorage.getItem("todoList")) || [];
+  storageTasks.push(data);
+  localStorage.setItem("todoList", JSON.stringify(storageTasks));
+};
+
+const getLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem("todoList")) || [];
+  data.forEach((taskList) => {
+    addList(taskList);
+  });
+};
+
+document.addEventListener("DOMContentLoaded", getLocalStorage);
+
 const addList = (taskList) => {
   const newLi = document.createElement("li");
   newLi.id = taskList.id;
@@ -46,21 +61,6 @@ const addList = (taskList) => {
   taskList.lineThrough && newP.classList.add("line-through");
 };
 
-const setLocalStorage = (data) => {
-  const storageTasks = JSON.parse(localStorage.getItem("todoList")) || [];
-  storageTasks.push(data);
-  localStorage.setItem("todoList", JSON.stringify(storageTasks));
-};
-
-const getLocalStorage = () => {
-  const data = JSON.parse(localStorage.getItem("todoList")) || [];
-  data.forEach((taskList) => {
-    addList(taskList);
-  });
-};
-
-document.addEventListener("DOMContentLoaded", getLocalStorage);
-
 btnAdd.addEventListener("click", () => {
   const data = {
     id: Date.now(),
@@ -74,6 +74,7 @@ btnAdd.addEventListener("click", () => {
       icon: "error",
       title: "Adding task failed",
     });
+    return;
   } else {
     addList(data);
   }
@@ -92,8 +93,66 @@ list.addEventListener("click", (e) => {
       }
       return item;
     });
-    document.querySelectorAll("li")
+    document.querySelectorAll("li").forEach((li) => li.remove());
     taskData.forEach((item) => addList(item));
     localStorage.setItem("todoList", JSON.stringify(taskData));
+  }
+
+  if (e.target.tagName == "I") {
+    const id = e.target.parentElement.id;
+    const taskData = data.filter((item) => item.id != id);
+    document.querySelectorAll("li").forEach((li) => li.remove());
+    taskData.forEach((item) => addList(item));
+    localStorage.setItem("todoList", JSON.stringify(taskData));
+    Toast.fire({
+      icon: "success",
+      title: "Task deleted!",
+    });
+  }
+
+  if (e.target.tagName == "A") {
+    const id = e.target.parentElement.id;
+    let taskData = data.find((item) => item.id == id);
+
+    const updateInput = document.createElement("input");
+    updateInput.value = taskData.task;
+
+    const p = e.target.previousElementSibling.previousElementSibling;
+    p.replaceWith(updateInput);
+
+    updateInput.addEventListener("blur", () => {
+      if (!updateInput.value) {
+        Toast.fire({
+          icon: "error",
+          title: "Task not updated!",
+        });
+        return;
+      }
+
+      taskData.task = updateInput.value;
+
+      const dataTask = data.map((item) =>
+        item.id == id ? { ...item, task: updateInput.value } : item
+      );
+      localStorage.setItem("todoList", JSON.stringify(dataTask));
+
+      const updatedP = document.createElement("p");
+      updatedP.textContent = taskData.task;
+
+      updateInput.replaceWith(updatedP);
+
+      Toast.fire({
+        icon: "success",
+        title: "Task updated!",
+      });
+    });
+
+    updateInput.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        updateInput.blur();
+      }
+    });
+
+    updateInput.focus();
   }
 });
