@@ -77,6 +77,10 @@ btnAdd.addEventListener("click", () => {
     return;
   } else {
     addList(data);
+    Toast.fire({
+      icon: "success",
+      title: "Task added",
+    });
   }
   setLocalStorage(data);
   input.value = "";
@@ -129,15 +133,13 @@ list.addEventListener("click", (e) => {
         return;
       }
 
-      taskData.task = updateInput.value;
-
       const dataTask = data.map((item) =>
         item.id == id ? { ...item, task: updateInput.value } : item
       );
       localStorage.setItem("todoList", JSON.stringify(dataTask));
 
       const updatedP = document.createElement("p");
-      updatedP.textContent = taskData.task;
+      updatedP.textContent = updateInput.value;
 
       updateInput.replaceWith(updatedP);
 
